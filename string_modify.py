@@ -16,6 +16,7 @@ def setup_string_modifications(oneString):
   
   # Checks for cases where the string only contains \r or \n and replaces ,\n with a space
   aStrings = aStrings.replace(',\n',' ')
+  aStrings = aStrings.replace(',\r\n',' ')
   if(len(aStrings) < 3):
     aStrings = aStrings.replace('\n',"")
 
