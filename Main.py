@@ -71,26 +71,26 @@ for dirpath,dirnames, files in os.walk(topdir):
       		else:
       		  req_list = [] 
       	   
-      	      # Package name is key and list of dependency is value
-      	      dict_value = []
-      	      if packageName in reqs:
+      	# Package name is key and list of dependency is value
+      	dict_value = []
+      	if packageName in reqs:
       		weirdCases.append(packageName)
-      	      for u in req_list:
-      		dict_value.append(u)
-      	      reqs[packageName] = dict_value
+      	for u in req_list:
+      	  dict_value.append(u)
+        reqs[packageName] = dict_value
       
-      	      # Dictionary with key as required package
-      	      for u in req_list:
-      		# Check if key already exists else creates one
+      	# Dictionary with key as required package
+      	for u in req_list:
+      	  # Check if key already exists else creates one
       		if u in prereqs:
       		  if packageName not in prereqs[u]:
       		    prereqs[u].append(packageName)
       		else:
       		  prereqs[u] = []
       		  prereqs[u].append(packageName)
-      	      print counter
-      	      print packageName
-      	      print req_list
+      print counter
+      print packageName
+      print req_list
       
      
 print counter
