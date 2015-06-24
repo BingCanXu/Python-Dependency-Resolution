@@ -4,6 +4,16 @@ import getReq
 import getSetup
 import checkRequirements
 
+'''This script will walk through the directory '/srv/pypi/web/packages/source' 
+and find the dependencies from either the requires.txt, setup.py, or 
+requirements.txt file. It will store the data into reqs, which is a dictionary
+that has its key as the package name and the value a list of the dependencies.
+prereqs has its key as the dependency and the value a list of packages that 
+need this dependency. Then, using these two dictionary, it will store the information
+into two json files. There is also a list called problematicPackages, which
+will add the packages that have trouble opening the setup.py file.
+The list weirdCases is to troubleshoot as potential errors in reading
+the setup.py file'''
 
 topdir= '/srv/pypi/web/packages/source'
 req_string = ''
@@ -11,15 +21,23 @@ problematicPackages = []
 reqs = {}
 prereqs = {}
 counter = 0
+weirdCases = []
 
 
 for dirpath,dirnames, files in os.walk(topdir):
   for name in files:
     # Stop from looking within package for other setup.py
-    if(os.path.join(dirpath,name).count("/") < 10):	
+    if(os.path.join(dirpath,name).count("/") == 9):
 	    if name == 'setup.py':
-	      counter = counter + 1
+	      # The name of the package
 	      packageName = dirpath[dirpath.rfind('/')+1:len(dirpath)]
+	      splicedstring = dirpath[:dirpath.rfind('/')]
+	      #The name of the directory that contain the package 
+	     packageDir = splicedstring[splicedstring.rfind('/')+1:len(splicedstring)]
+	      if packageDir not in packageName:
+		weirdCases.append(os.path.join(dirpath,name))
+		break
+              counter = counter + 1
 	      # Should return none if there is no requires.txt.
 	      req_string = getReq.get_from_require(os.path.join(dirpath,''))
 	      if req_string:
@@ -56,6 +74,8 @@ for dirpath,dirnames, files in os.walk(topdir):
 	   
 	      # Package name is key and list of dependency is value
 	      dict_value = []
+	      if packageName in reqs:
+		weirdCases.append(packageName)
 	      for u in req_list:
 		dict_value.append(u)
 	      reqs[packageName] = dict_value
@@ -77,6 +97,11 @@ for dirpath,dirnames, files in os.walk(topdir):
       
      
 print counter
+
+with open("weirdcases.txt",'w') as weird:
+  for packName in weirdCases:
+    weird.write(packName + '\n')
+    
 with open("probGetPak.txt",'w') as probPak:
   for packName in problematicPackages:
     probPak.write(packName + '\n')	
