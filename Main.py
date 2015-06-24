@@ -28,48 +28,48 @@ for dirpath,dirnames, files in os.walk(topdir):
   for name in files:
     # Stop from looking within package for other setup.py
     if(os.path.join(dirpath,name).count("/") == 9):
-	    if name == 'setup.py':
-	      # The name of the package
-	      packageName = dirpath[dirpath.rfind('/')+1:len(dirpath)]
-	      splicedstring = dirpath[:dirpath.rfind('/')]
-	      #The name of the directory that contain the package 
-	      packageDir = splicedstring[splicedstring.rfind('/')+1:len(splicedstring)]
-	      # Checks for potential errors because standard naming: Numpy/Numpy-1.2 
-	      # where Numpy = package directory and Numpy-1.2 is packageName
-	      if packageDir not in packageName:
-	      	weirdCases.append(os.path.join(dirpath,name))
-		      break
+      if name == 'setup.py':
+        # The name of the package
+        packageName = dirpath[dirpath.rfind('/')+1:len(dirpath)]
+        splicedstring = dirpath[:dirpath.rfind('/')]
+        #The name of the directory that contain the package 
+        packageDir = splicedstring[splicedstring.rfind('/')+1:len(splicedstring)]
+        # Checks for potential errors because standard naming: Numpy/Numpy-1.2 
+        # where Numpy = package directory and Numpy-1.2 is packageName
+        if packageDir not in packageName:
+      	  weirdCases.append(os.path.join(dirpath,name))
+	  break
         counter = counter + 1
-	      # Should return '' if there is no requires.txt.
-	      req_string = getReq.get_from_require(os.path.join(dirpath,''))
-	      if req_string:
-	      	req_list = req_string.split()
-	     
-	      else: 
-      		try:
-      	    dataFile = file(os.path.join(dirpath,name))
-      		except Exception:
-      		  problematicPackages.append(packageName)
-      		  continue
-      		# Should return the dependencies or (check requirements.txt) if can't find requires
-      		req_string = getSetup.get_from_setup(dataFile,packageName)
-      	  
-      		if req_string:
-      		  # Check to see if it's a method or (check requirements.txt)
-      		  if '(' in req_string:		
-      		  # Make sure it's not numpy(<=1.2) before going to check requirements.txt
-      		    if not (req_string[req_string.find('(')+1]=='<' or \
-      		    req_string[req_string.find('(')+1]=='>' or \
-      		    req_string[req_string.find('(')+1]=='='):
-      		      req_string = checkRequirements.get_requirements(os.path.join(dirpath,''))
-      		    if req_string: 
-      		      req_list = req_string.split()
-      		    else:
-      		      req_list = []
-      		  else:
-      		    req_list = req_string.split() 
-      		else:
-      		  req_list = [] 
+        # Should return '' if there is no requires.txt.
+        req_string = getReq.get_from_require(os.path.join(dirpath,''))
+        if req_string:
+      	  req_list = req_string.split()
+     
+        else: 
+      	  try:
+            dataFile = file(os.path.join(dirpath,name))
+      	  except Exception:
+      	    problematicPackages.append(packageName)
+      	    continue
+      	  # Should return the dependencies or (check requirements.txt) if can't find requires
+      	  req_string = getSetup.get_from_setup(dataFile,packageName)
+        
+      	  if req_string:
+      	    # Check to see if it's a method or (check requirements.txt)
+      	    if '(' in req_string:		
+      	    # Make sure it's not numpy(<=1.2) before going to check requirements.txt
+      	      if not (req_string[req_string.find('(')+1]=='<' or \
+      	      req_string[req_string.find('(')+1]=='>' or \
+      	      req_string[req_string.find('(')+1]=='='):
+      	        req_string = checkRequirements.get_requirements(os.path.join(dirpath,''))
+      	      if req_string: 
+      	        req_list = req_string.split()
+      	      else:
+      	        req_list = []
+      	    else:
+      	      req_list = req_string.split() 
+      	  else:
+      	    req_list = [] 
       	   
       	# Package name is key and list of dependency is value
       	dict_value = []
@@ -81,16 +81,16 @@ for dirpath,dirnames, files in os.walk(topdir):
       
       	# Dictionary with key as required package
       	for u in req_list:
-      	  # Check if key already exists else creates one
-      		if u in prereqs:
-      		  if packageName not in prereqs[u]:
-      		    prereqs[u].append(packageName)
-      		else:
-      		  prereqs[u] = []
-      		  prereqs[u].append(packageName)
-      print counter
-      print packageName
-      print req_list
+        # Check if key already exists else creates one
+      	if u in prereqs:
+      	  if packageName not in prereqs[u]:
+      	    prereqs[u].append(packageName)
+      	else:
+      	  prereqs[u] = []
+      	  prereqs[u].append(packageName)
+        print counter
+        print packageName
+        print req_list
       
      
 print counter
