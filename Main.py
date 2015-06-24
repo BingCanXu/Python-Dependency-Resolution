@@ -47,7 +47,7 @@ for dirpath,dirnames, files in os.walk(topdir):
      
         else: 
       	  try:
-            dataFile = file(os.path.join(dirpath,name))
+            dataFile = open(os.path.join(dirpath,name))
       	  except Exception:
       	    problematicPackages.append(packageName)
       	    continue
