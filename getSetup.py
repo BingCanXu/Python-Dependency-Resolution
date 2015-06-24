@@ -1,11 +1,14 @@
 import os
 import string_modify
 
+''' This function reads from the setup.py file and checks if it contains
+a dependency list with keys requires or install_requires. If it does have
+these keywords, it will instruct the main to check requirements.txt, this
+function calls on string_modify.py to modify the string so that it would
+be same as from requires.txt'''
 
 def get_from_setup(openedFile,packageName):
   req_strings = ""
-
-  #checks to see if install_requires exist
   string_of_file = openedFile.read().replace(' ',"")
 
   if 'install_requires=[' in string_of_file:
@@ -18,9 +21,12 @@ def get_from_setup(openedFile,packageName):
     req = 'requires={'
   else:
     req_strings = "(check requirements.txt)"
+    # Returns (check requirements.txt) so it would check requirements.txt 
     return req_strings
-  print req
+    
+ 
   numBracket = 0
+  # Restart at the beginning of the file
   openedFile.seek(0)
   for line in openedFile:
 
@@ -57,9 +63,7 @@ def get_from_setup(openedFile,packageName):
         req_strings = req_strings + no_space_line
         numBracket = req_strings.count('{') - req_strings.count('}')
 
-
-
-
+  # Takes out the extra quotes or comma from the string
   req_strings = string_modify.setup_string_modifications(req_strings)
   
   return req_strings
