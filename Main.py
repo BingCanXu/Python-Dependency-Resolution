@@ -31,12 +31,18 @@ for dirpath,dirnames, files in os.walk(topdir):
       if name == 'setup.py':
         # The name of the package
         packageName = dirpath[dirpath.rfind('/')+1:len(dirpath)]
-        splicedstring = dirpath[:dirpath.rfind('/')]
+        dirpathCpy = dirpath.replace('-','')
+        dirpathCpy = dirpathCpy.replace('_','')
+        dirpathCpy = dirpathCpy.replace(' ','')
+        dirpathCpy = dirpathCpy.lower()
+        splicedstring = dirpathCpy[:dirpathCpy.rfind('/')]
         #The name of the directory that contain the package 
         packageDir = splicedstring[splicedstring.rfind('/')+1:len(splicedstring)]
+        # Copy of packageName without '-', '_', and all lowercase
+        packageNamesub = dirpathCpy[dirpathCpy.rfind('/')+1:len(dirpathCpy)]
         # Checks for potential errors because standard naming: Numpy/Numpy-1.2 
         # where Numpy = package directory and Numpy-1.2 is packageName
-        if packageDir not in packageName:
+        if packageDir not in packageNamesub:
       	  weirdCases.append(os.path.join(dirpath,name))
 	  break
         counter = counter + 1
