@@ -87,13 +87,13 @@ for dirpath,dirnames, files in os.walk(topdir):
       
       	# Dictionary with key as required package
       	for u in req_list:
-        # Check if key already exists else creates one
-      	if u in prereqs:
-      	  if packageName not in prereqs[u]:
+          # Check if key already exists else creates one
+          if u in prereqs:
+      	    if packageName not in prereqs[u]:
+      	      prereqs[u].append(packageName)
+      	  else:
+      	    prereqs[u] = []
       	    prereqs[u].append(packageName)
-      	else:
-      	  prereqs[u] = []
-      	  prereqs[u].append(packageName)
         print counter
         print packageName
         print req_list
