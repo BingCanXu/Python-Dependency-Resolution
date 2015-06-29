@@ -80,7 +80,7 @@ for dirpath,dirnames, files in os.walk(topdir):
       	# Package name is key and list of dependency is value
       	dict_value = []
       	if packageName in reqs:
-      		weirdCases.append(packageName)
+      	  weirdCases.append(packageName)
       	for u in req_list:
       	  dict_value.append(u)
         reqs[packageName] = dict_value
