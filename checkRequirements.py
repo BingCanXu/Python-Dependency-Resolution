@@ -31,7 +31,7 @@ def get_requirements(topdir):
               # Checks for cases for requirements of [test] or [dev]. 
               if '[' in aline:
                 break
-            req_string = req_string + aline
+              req_string = req_string + aline
         except Exception:
           continue
 
