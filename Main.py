@@ -32,8 +32,8 @@ for dirpath,dirnames, files in os.walk(topdir):
     if(os.path.join(dirpath,name).count("/") == 9):
       if name == 'setup.py':
         # The name of the package
-        packageName = dirpath[dirpath.rfind('/')+1:len(dirpath)]
         dirpathCpy = dirpath.lower()
+        packageName = dirpathCpy[dirpathCpy.rfind('/')+1:len(dirpathCpy)]
         splicedstring = dirpathCpy[:dirpathCpy.rfind('/')]
         #The name of the directory that contain the package 
         packageDir = splicedstring[splicedstring.rfind('/')+1:len(splicedstring)]
