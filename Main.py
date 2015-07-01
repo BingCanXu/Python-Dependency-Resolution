@@ -17,7 +17,7 @@ will add the packages that have trouble opening the setup.py file.
 The list weirdCases is to troubleshoot as potential errors in reading
 the setup.py file'''
 
-topdir= '/srv/pypi/web/packages/source'
+topdir= '/srv/pypi/web/packages/source/Z'
 req_string = ''
 problematicPackages = []
 reqs = {}
@@ -32,8 +32,8 @@ for dirpath,dirnames, files in os.walk(topdir):
     if(os.path.join(dirpath,name).count("/") == 9):
       if name == 'setup.py':
         # The name of the package
-        packageName = dirpath[dirpath.rfind('/')+1:len(dirpath)]
         dirpathCpy = dirpath.lower()
+        packageName = dirpathCpy[dirpathCpy.rfind('/')+1:len(dirpathCpy)]
         splicedstring = dirpathCpy[:dirpathCpy.rfind('/')]
         #The name of the directory that contain the package 
         packageDir = splicedstring[splicedstring.rfind('/')+1:len(splicedstring)]
@@ -49,6 +49,7 @@ for dirpath,dirnames, files in os.walk(topdir):
         counter = counter + 1
         # Should return '' if there is no requires.txt.
         req_string = getReq.get_from_require(os.path.join(dirpath,''))
+        req_string = req_string.lower()
         if req_string:
           req_list = req_string.split()
 
@@ -60,6 +61,7 @@ for dirpath,dirnames, files in os.walk(topdir):
             continue
           # Should return the dependencies or (check requirements.txt) if can't find requires
           req_string = getSetup.get_from_setup(dataFile)
+          req_string = req_string.lower()
           if req_string:
             # Check to see if it's a method or (check requirements.txt)
             if '(' in req_string:		
@@ -68,6 +70,7 @@ for dirpath,dirnames, files in os.walk(topdir):
               req_string[req_string.find('(')+1]=='>' or \
               req_string[req_string.find('(')+1]=='='):
                 req_string = checkRequirements.get_requirements(os.path.join(dirpath,''))
+              req_string = req_string.lower()
               if req_string: 
                 req_list = req_string.split()
               else:
@@ -76,7 +79,6 @@ for dirpath,dirnames, files in os.walk(topdir):
               req_list = req_string.split() 
           else:
             req_list = [] 
-
         # Package name is key and list of dependency is value
         dict_value = []
         if packageName in reqs:
