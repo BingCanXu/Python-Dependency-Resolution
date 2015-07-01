@@ -6,17 +6,17 @@ def setup_string_modifications(oneString):
   # Some packages has requirements like [Django,] or {Django,} and takes out either ,] or ]
   if ',]' in aStrings:
     aStrings = aStrings.replace(',]', ']')
-	
+
   if ']' in aStrings:
     aStrings= aStrings[0:aStrings.find(']')]
 
   if ',}' in aStrings:
     aStrings = aStrings.replace(',}', '}')
-	
+
   if '}' in aStrings:
     aStrings= aStrings[0:aStrings.find('}')]
-  
-  
+
+
   # Checks for cases where the string only contains \r or \n and replaces ,\n with a space
   aStrings = aStrings.replace(',\n',' ')
   aStrings = aStrings.replace(',\r\n',' ')
@@ -25,7 +25,7 @@ def setup_string_modifications(oneString):
     aStrings = aStrings.replace('\n',"")
 
   aStrings = aStrings.replace('\r',"")
- 
+
   # Replaces the extra quotes and comma from install_requires or requires
   newString = aStrings.replace("','", ' ')
   newStringw = newString.replace('","', ' ')
@@ -33,9 +33,9 @@ def setup_string_modifications(oneString):
   newStringt = newStringr.replace("\",\'", ' ')
   newStringv = newStringt.replace('"','')
   finString = newStringv.replace("'","")
-  
+
   return finString			
 
 
-						
-					
+
+
