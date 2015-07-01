@@ -28,7 +28,7 @@ def get_from_require(topdir):
       except Exception:
         continue  
   
-return req_string
+  return req_string
 
 
 
