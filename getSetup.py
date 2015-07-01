@@ -7,7 +7,7 @@ these keywords, it will instruct the main to check requirements.txt, this
 function calls on string_modify.py to modify the string so that it would
 be same as from requires.txt'''
 
-def get_from_setup(openedFile,packageName):
+def get_from_setup(openedFile):
   req_strings = ""
   string_of_file = openedFile.read().replace(' ',"")
 
